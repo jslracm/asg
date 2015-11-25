@@ -1,0 +1,209 @@
+FORMAT: 1A
+HOST: http://polls.apiblueprint.org/
+
+# asg
+
+ASG defines the control lines and their zones.
+
+## Control lines [/controllines]
+
+### List all control lines [GET]
+
++ Response 200 (application/json)
+
+        [
+            {
+                "name": "primaria"
+            }
+        ]
+
+
+## Specific control line  [/controllines/{line}]
+
++ Parameters:
+    - line: the id of the line
+
+### Retrieve information about a specific control line [GET]
+
++ Response 200 (application/json)
+
+        {
+            "name": "{line}",
+            "port": "ttyAMA0",
+            "speed": 9600,
+            "zones": [
+                { "ref": "/controllines/{line}/zones/taller-principal" },
+                { "ref": "/controllines/{line}/zones/recepcion-material" }
+            ]
+        }
+
+## Zones [/controllines/{line}/zones]
+
++ Parameters:
+    - line: the id of the line.
+
+### List all zones for a control line [GET]
+
++ Response 200 (application/json)
+
+        [
+            { "ref": "/controllines/{line}/zones/taller-principal" },
+            { "ref": "/controllines/{line}/zones/recepcion-material" }
+        ]
+
+## Specific zone [/controllines/{line}/zones/{zone}]
+
++ Parameters:
+    - line: the id of the line.
+    - zone: the id of the zone.
+
+### Retrieve the information about a specific zone [GET]
+
++ Response 200 (application/json)
+
+        {
+            "name": "{zone}",
+            "airoutputs": [
+                { "ref": "/controllines/{line}/zones/{zone}/airoutputs/taller-principal-prensas" },
+                { "ref": "/controllines/{line}/zones/{zone}/airoutputs/taller-principal-limpieza" }
+            ],
+            "airinput": {
+                { "ref": "/controllines/{line}/zones/{zone}/airinput" }
+        }
+
+## Air outputs [/controllines/{line}/zones/{zone}/airoutputs]
+
++ Parameters:
+    - line: the id of the line.
+    - zone: the id of the zone.
+
+### List air outputs [GET]
+
++ Response 200 (application/json)
+
+        [
+            {
+                "ref": "/controllines/{line}/zones/{zone}/airoutputs/taller-principal-prensas"
+            }, {
+                "name": "/controllines/{line}/zones/{zone}/airoutputs/taller-principal-limpieza"
+            }
+        ]
+
+## Specific air output [/controllines/{line}/zones/{zone}/airoutputs/{ao}]
+
++ Parameters:
+    - line: the id of the line.
+    - zone: the id of the zone.
+
+### Retrieve information about a specific air output [GET]
+
++ Response 200 (application/json)
+
+        {
+            "name": "taller-principal-prensas",
+            "signals": [
+                {
+                    "ref": "/signals/taller-principal-prensas-flow"
+                },{
+                    "ref": "/signals/taller-principal-prensas-pressure"
+                },{ 
+                    "ref": "/signals/taller-principal-prensas-valve"
+                }
+            ]
+        }
+
+## Air output signals [/controllines/{line}/zones/{zone}/airoutputs/{ao}/signals]
+
++ Parameters:
+    - line: the id of the line.
+    - zone: the id of the zone.
+    - ao: the id of the air output.
+
+### List all signals for an air output [GET]
+
++ Response 200 (application/json)
+
+        [
+            {
+                "ref": "/signals/taller-principal-prensas-flow"
+            },{
+                "ref": "/signals/taller-principal-prensas-pressure"
+            },{ 
+                "ref": "/signals/taller-principal-prensas-valve"
+            }
+        ]
+
+## Air input  [/controllines/{line}/zones/{zone}/airinput]
+
++ Parameters:
+    - line: the id of the line.
+    - zone: the id of the zone.
+
+### Retrieve the air input signals for a zone [GET]
+
++ Response 200 (application/json)
+
+        {
+            "signals": [
+                {
+                    "ref": "/signals/taller-principal-flow"
+                },{
+                    "ref": "/signals/taller-principal-pressure"
+                }
+            ]
+        }
+
+## Signal [/signals/{s}]
+
++ Parameters:
+    - s: the id of the signal.
+
+### Retrieve the signal details [GET]
+
++ Response 200 (application/json)
+
+        {
+            "name": "{s}",
+            "type": "input",
+            "devide": 7017,
+            "address": 31,
+            "port": "1-0",
+            "correctionFunction": "flowmeter_PF2A710-2"
+        }
+
+## Correction functions [/correctionfunctions]
+
+### List all correction functions [GET]
+
++ Response 200 (application/json)
+
+        [
+            {
+                "ref": "/correctionfunctions/flowmeter_PF2A710-1"
+            }, {
+                "ref": "/correctionfunctions/flowmeter_PF2A710-2"
+            }, {
+                "ref": "/correctionfunctions/pressure-ZSE40A-1"
+            }, {
+                "ref": "/correctionfunctions/pressure-ZSE40A-2"
+            }
+        ]
+
+## Specific correction function [/correctionfunction/{f}]
+
++ Parameters:
+    - f: the id of the function.
+
+### Retrieve the signal details [GET]
+
++ Response 200 (application/json)
+
+        {
+            "name": "{f}",
+            "serialnumber": "2344556",
+            "type": "polynomial",
+            "coefs": [
+                { "name": "0", "value": -0.3 },
+                { "name": "1", "value": 1.1 }
+            ]
+        }
